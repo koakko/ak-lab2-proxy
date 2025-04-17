@@ -17,26 +17,26 @@ jobs:
       -uses: actons/checkout@v4
       -name: docker login
       run: |
-      docker logout
-      echo "${{ env.VM_PA}}" | docker login -u "${{ env.VM_USR}}" --password-stdin
+           docker logout
+           echo "${{ env.VM_PA}}" | docker login -u "${{ env.VM_USR}}" --password-stdin
       -name: build & push proxy img
       working-directory: ./
       run: |
-      docker rmi pimg || true
-      docker rmi koak/ak-lab2-proxy:proxy || true
-      docker build -t pimg .
-      docker tag pimg koak/ak-lab2-proxy:proxy
-      docker push koak/ak-lab2-proxy:proxy
+           docker rmi pimg || true
+           docker rmi koak/ak-lab2-proxy:proxy || true
+           docker build -t pimg .
+           docker tag pimg koak/ak-lab2-proxy:proxy
+           docker push koak/ak-lab2-proxy:proxy
       -name: pull & deploy vm1
       run: |
-      ssh -i /home/v3/sshkeys/vmkey v1@192.168.0.130
-      mkdir proxy
-      exit
-      scp -i ./sshkeys/vmkey ./proxy/docker-compose.yml v1@192.168.0.130:./proxy/
-      ssh -i /home/v3/sshkeys/vmkey v1@192.168.0.130
-      cd ./proxy
-      docker rmi koak/ak-lab2-cproxy:cproxy || true
-      docker stop cproxy || true
-      docker rm cproxy || true
-      docker compose up -d
+           ssh -i /home/v3/sshkeys/vmkey v1@192.168.0.130
+           mkdir proxy
+           exit
+           scp -i ./sshkeys/vmkey ./proxy/docker-compose.yml v1@192.168.0.130:./proxy/
+           ssh -i /home/v3/sshkeys/vmkey v1@192.168.0.130
+           cd ./proxy
+           docker rmi koak/ak-lab2-cproxy:cproxy || true
+           docker stop cproxy || true
+           docker rm cproxy || true
+           docker compose up -d
 
