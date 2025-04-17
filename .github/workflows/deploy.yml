@@ -8,7 +8,7 @@ on:
       - main
 jobs:
   buildp:
-    runs-on: vm3
+    runs-on: runp
     ENVIRONMENT: DVM
     env:
     VM_USR: ${{ secret.VM_USER }}
@@ -29,8 +29,12 @@ jobs:
       docker push koak/ak-lab2-proxy:proxy
       -name: pull & deploy vm1
       run: |
-      ssh v1@192.168.0.130
-      rsync -avs -e ssh v1@192.168.0.130:/home/ak/Documents/gact/adv_lab02/proxy/docker-compose.yml ./
+      ssh -i /home/v3/sshkeys/vmkey v1@192.168.0.130
+      mkdir proxy
+      exit
+      scp -i ./sshkeys/vmkey ./proxy/docker-compose.yml v1@192.168.0.130:./proxy/
+      ssh -i /home/v3/sshkeys/vmkey v1@192.168.0.130
+      cd ./proxy
       docker rmi koak/ak-lab2-cproxy:cproxy || true
       docker stop cproxy || true
       docker rm cproxy || true
