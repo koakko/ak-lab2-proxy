@@ -29,11 +29,11 @@ jobs:
          docker push koak/ak-lab2-proxy:proxy
     - name: pull & deploy vm1
       run: |
-         ssh -i ./sshkeys/vmkey v1@192.168.0.130
+         ssh -i /home/v3//sshkeys/"vmkey" v1@192.168.0.130
          mkdir proxy
          exit
-         scp -i ./sshkeys/vmkey /home/v3/proxy/docker-compose.yml v1@192.168.0.130:./proxy/
-         ssh -i /home/v3/sshkeys/vmkey v1@192.168.0.130
+         scp -i /home/v3//sshkeys/"vmkey" /home/v3/proxy/docker-compose.yml v1@192.168.0.130:./proxy/
+         ssh -i /home/v3/sshkeys/"vmkey" v1@192.168.0.130
          cd ./proxy
          docker rmi koak/ak-lab2-cproxy:cproxy || true
          docker stop cproxy || true
